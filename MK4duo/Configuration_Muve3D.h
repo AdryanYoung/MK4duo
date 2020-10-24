@@ -2,8 +2,8 @@
  * MK4duo Firmware for 3D Printer, Laser and CNC
  *
  * Based on Marlin, Sprinter and grbl
- * Copyright (C) 2011 Camiel Gubbels / Erik van der Zalm
- * Copyright (C) 2013 Alberto Cotronei @MagoKimbra
+ * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
+ * Copyright (c) 2020 Alberto Cotronei @MagoKimbra
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,6 +43,7 @@
  * - Axis steps per unit
  * - Axis feedrate
  * - Axis accelleration
+ * - XY Frequency limit
  * - Homing feedrate
  *
  * Basic-settings can be found in Configuration_Basic.h
@@ -84,21 +85,19 @@
  * disable the endstop pullup resistors                                                  *
  *                                                                                       *
  *****************************************************************************************/
-#define ENDSTOPPULLUPS
-
-#if DISABLED(ENDSTOPPULLUPS)
-// fine endstop settings: Individual pullups. will be ignored if ENDSTOPPULLUPS is defined
-//#define ENDSTOPPULLUP_XMIN
-//#define ENDSTOPPULLUP_YMIN
-//#define ENDSTOPPULLUP_ZMIN
-//#define ENDSTOPPULLUP_Z2MIN
-//#define ENDSTOPPULLUP_XMAX
-//#define ENDSTOPPULLUP_YMAX
-//#define ENDSTOPPULLUP_ZMAX
-//#define ENDSTOPPULLUP_Z2MAX
-//#define ENDSTOPPULLUP_ZPROBE
-//#define ENDSTOPPULLUP_EMIN
-#endif
+#define ENDSTOPPULLUP_XMIN    false
+#define ENDSTOPPULLUP_YMIN    false
+#define ENDSTOPPULLUP_ZMIN    false
+#define ENDSTOPPULLUP_Z2MIN   false
+#define ENDSTOPPULLUP_Z3MIN   false
+#define ENDSTOPPULLUP_Z4MIN   false
+#define ENDSTOPPULLUP_XMAX    false
+#define ENDSTOPPULLUP_YMAX    false
+#define ENDSTOPPULLUP_ZMAX    false
+#define ENDSTOPPULLUP_Z2MAX   false
+#define ENDSTOPPULLUP_Z3MAX   false
+#define ENDSTOPPULLUP_Z4MAX   false
+#define ENDSTOPPULLUP_ZPROBE  false
 /*****************************************************************************************/
 
 
@@ -119,7 +118,6 @@
 #define Z_MAX_ENDSTOP_LOGIC   false   // set to true to invert the logic of the endstop.
 #define Z2_MAX_ENDSTOP_LOGIC  false   // set to true to invert the logic of the endstop.
 #define Z_PROBE_ENDSTOP_LOGIC false   // set to true to invert the logic of the probe.
-#define E_MIN_ENDSTOP_LOGIC   false   // set to true to invert the logic of the endstop.
 /*****************************************************************************************/
 
 
@@ -145,7 +143,6 @@
 #define X_HOME_DIR -1
 #define Y_HOME_DIR -1
 #define Z_HOME_DIR -1
-#define E_HOME_DIR -1
 /*****************************************************************************************/
 
 
@@ -157,7 +154,7 @@
  * Be sure you have this distance over your Z MAX POS in case.                           *
  *                                                                                       *
  *****************************************************************************************/
-#define MIN_Z_HEIGHT_FOR_HOMING   0
+#define MIN_Z_HEIGHT_FOR_HOMING 0
 /*****************************************************************************************/
 
 
@@ -295,11 +292,15 @@
 /*****************************************************************************************
  ********************************** Axis feedrate ****************************************
  *****************************************************************************************/
-//                                       X,   Y,  Z, E0...(per extruder). (mm/sec)
-#define DEFAULT_MAX_FEEDRATE          {600, 600, 20, 20}
-#define MANUAL_FEEDRATE               {50*60, 50*60, 10*60, 10*60}  // Feedrates for manual moves along X, Y, Z, E from panel
-#define DEFAULT_MINIMUMFEEDRATE       0.0                       // minimum feedrate
-#define DEFAULT_MINTRAVELFEEDRATE     0.0
+//                                       X,   Y,   Z,  E0...(per extruder). (mm/sec)
+#define DEFAULT_MAX_FEEDRATE          {500, 500, 500, 100, 100, 100, 100}
+// Feedrates for manual moves along     X,  Y,  Z,  E from panel (mm/sec)
+#define MANUAL_FEEDRATE               {50, 50, 50, 10}
+// (mm) Smallest manual Z move (< 0.1mm)
+#define SHORT_MANUAL_Z_MOVE           0.025
+// Minimum feedrate
+#define DEFAULT_MIN_FEEDRATE          0.0
+#define DEFAULT_MIN_TRAVEL_FEEDRATE   0.0
 // Minimum planner junction speed. Sets the default minimum speed the planner plans for at the end
 // of the buffer and all stops. This should not be much greater than zero and should only be changed
 // if unwanted behavior is observed on a user's machine when running at very slow speeds.
@@ -318,6 +319,22 @@
 #define DEFAULT_ACCELERATION          3000
 //  X, Y, Z acceleration in mm/s^2 for travel (non printing) moves
 #define DEFAULT_TRAVEL_ACCELERATION   3000
+/*****************************************************************************************/
+
+
+/*****************************************************************************************
+ ******************************* XY Frequency limit **************************************
+ *****************************************************************************************
+ *                                                                                       *
+ * Reduce resonance by limiting the frequency of small zigzag infill moves.              *
+ * See http://hydraraptor.blogspot.com/2010/12/frequency-limit.html                      *
+ * Use M201 F<freq> G<min%> to change limits at runtime.                                 *
+ *                                                                                       *
+ *****************************************************************************************/
+// (Hz) Maximum frequency of small zigzag infill moves. Set with M201 F<hertz>.
+//#define XY_FREQUENCY_LIMIT       10
+// (percent) Minimum FR percentage to apply. Set with M201 G<min%>.
+#define XY_FREQUENCY_MIN_PERCENT  5
 /*****************************************************************************************/
 
 
@@ -367,9 +384,12 @@
  * For the other hotends it is their distance from the hotend 0.                         *
  *                                                                                       *
  *****************************************************************************************/
-#define HOTEND_OFFSET_X {0.0, 0.0, 0.0, 0.0} // (in mm) for each hotend, offset of the hotend on the X axis
-#define HOTEND_OFFSET_Y {0.0, 0.0, 0.0, 0.0} // (in mm) for each hotend, offset of the hotend on the Y axis
-#define HOTEND_OFFSET_Z {0.0, 0.0, 0.0, 0.0} // (in mm) for each hotend, offset of the hotend on the Z axis
+// (in mm) for each hotend, offset of the hotend on the X axis
+#define HOTEND_OFFSET_X {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}
+// (in mm) for each hotend, offset of the hotend on the Y axis
+#define HOTEND_OFFSET_Y {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}
+// (in mm) for each hotend, offset of the hotend on the Z axis
+#define HOTEND_OFFSET_Z {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}
 /*****************************************************************************************/
 
 #endif /* _CONFIGURATION_MUVE3D_H_ */

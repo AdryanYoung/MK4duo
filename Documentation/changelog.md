@@ -1,3 +1,283 @@
+### Version 4.4.0
+*
+* Revision 24-05-2020
+*
+* Version EEPROM MKV80
+*
+* Version Nextion 1_3_2
+*
+* Add support SdFat library by Bill Greiman 1.1.1 or higher
+*
+* Add Nextion 7" Intelligent
+*
+* Start development for STM32 on board Rumba32
+*   Hardware Timer for stepper  OK
+*   Systick for temp            OK
+*   PWM Hardware                OK
+*   SD                          OK
+*   Serial                      OK
+*   EEPROM on FLASH             OK
+*   Display Nextion             OK
+*   DHT                         OK
+*   SERVO                       OK
+*   BLTOUCH                     OK
+*   DISPLAY 20x4                No Test
+*   DISPLAY Graphics            Function
+*   Neopixel                    Not function
+*
+* Add XY_FREQUENCY_LIMIT
+*   Reduce resonance by limiting the frequency of small zigzag infill moves.
+*   See http://hydraraptor.blogspot.com/2010/12/frequency-limit.html
+*
+* M201: Add set XY frequency limit and minimum FR percentage
+*   F[Hz]   XY Frequency Limit
+*   G[%]    Minimum FR percentage
+*
+* M353: Set total number Extruder, Hotend, Bed, Chamber, Fan
+*   D[int]  Set number driver extruder
+*   E[int]  Set number extruder
+*   H[int]  Set number hotend
+*   B[int]  Set number bed
+*   C[int]  Set number chamber
+*   F[int]  Set number fan
+*
+* M563: Set Tools heater assignment
+*   T[int]  Set Tool
+*   D[int]  Set Driver for tool
+*   H[int]  Set Hotend for tool
+*
+* M672: Set/reset Probe Smart Effector sensitivity
+*   S[sensitivity] 0-255, R reset sensitivity to default
+*
+* M890: Run User GCode
+*   S[int]    - Run 1 - 5 user gcode
+*
+* M900: S[bool] Active Linear Advance Test see new valor in configuration LIN_ADVANCE_K_START and LIN_ADVANCE_K_FACTOR
+*
+* Add multiple Language, max 5, for lcd..
+*
+* Rename DELTA_SEGMENTS_PER_SECOND in DELTA_SEGMENTS_PER_SECOND_PRINT for delta print
+* Add DELTA_SEGMENTS_PER_SECOND_MOVE for delta move
+* Add Linear advanced K-Factor for Extruder
+*
+* Add TMC Homing stepper phase
+*
+* Add Nextion Baudrate
+* Add Nextion CRC on serial
+*
+* Fix JUNCTION_DEVIATION
+* Fix BABYSTEPPING
+* Fix M569 code for extruder
+*
+* Add Board RUMBA32 MKS
+* Add Board STEVAL-3DP001V1
+*
+* Add L64xx driver
+*
+* Add Duet Smart Effector (for delta printers) - https://bit.ly/2ul5U7J
+* Fix Alligator V2 DAC
+*
+* Fix problem with STM32core 1_8_0
+* Fix problem with TOOL_CHANGE_FIL_SWAP
+* Fix and clear code
+
+### Version 4.3.9
+* EEROM Version MKV72
+* New graphic for Nextion 4.3, 5.0 or 7.0 Normal and Enanched
+* Add support 6 Hotends, 4 Hot Beds, 4 Hot Chambers and 1 water Cooler
+* Add Support for TMC2130 - TMC2208 - TMC2660 - TMC2160 - TMC5130 - TMC5160 motor driver
+* Add command M228 for setting axis limit min/max
+* Add Tool change Park
+* Add Tool change filament swap
+* Add Prompt support for host
+* Add support for BLTouch V3.0/V3.1
+* Add Prusa MMU2 Support
+* Add support thermocouples for hotend and bed
+* Add menu axis limit to menu advanced
+* Add Double-Quad Stepping to command M569 Q and save it into EEPROM
+* Add Option for Safety Timer in configuration_temperature.h
+* Add Game menu
+* Add DHT menu
+* Add DHT disply Dew Point
+* Add SPI Endstop with TMC2130
+* Add Slow Homing
+* Add G34 and M422 Z Steppers Auto-Alignment (Cartesian and CORE)
+* Add G34 I[iterations] [accuracy] A[amplification]
+* Add M86 M[min] set safety timer expiration time in minute. M86 M0 will disable safety timer
+* Add M16 Expected printer check
+* Add M504 - Validate EEPROM Contents
+* Add M505 - Clear EEPROM and RESET Printer
+* Add M575 - Change serial baud rate
+* Add M217 - Set Park position and tool change parameters
+*   S[linear]   Swap length
+*   E[linear]   Purge length
+*   P[linear/m] Purge speed
+*   R[linear/m] Retract speed
+*   X[linear]   Park X (Requires NOZZLE_PARK_FEATURE)
+*   Y[linear]   Park Y (Requires NOZZLE_PARK_FEATURE)
+*   Z[linear]   Park Z Raise
+* M301 - Set PID parameters P I D and C.
+*   H[heaters] 0-5 Hotend, -1 BED, -2 CHAMBER, -3 COOLER
+*   T[int] 0-3 For Select Beds or Chambers (default 0)
+*   P[float] Kp term, I[float] Ki term, D[float] Kd term
+*   With PID_ADD_EXTRUSION_RATE: C[float] Kc term, L[int] LPQ length
+* M303 - PID relay autotune.
+*   H[heaters] 0-5 Hotend, -1 BED, -2 CHAMBER, -3 COOLER
+*   T[int] 0-3 For Select Beds or Chambers (default 0)
+*   S[temperature] sets the target temperature (default target temperature = 150C), C[cycles], U[Apply result],
+*   R[Method] 0 = Classic Pid, 1 = Some overshoot, 2 = No Overshoot, 3 = Pessen Pid
+* M305 - Set thermistor and ADC parameters.
+*   H[heaters] 0-5 Hotend, -1 BED, -2 CHAMBER, -3 COOLER
+*   T[int] 0-3 For Select Beds or Chambers (default 0)
+*   A[float] Thermistor resistance at 25°C, B[float] BetaK, C[float] Steinhart-Hart C coefficien, R[float] Pullup resistor value,
+*   L[int] ADC low offset correction, O[int] ADC high offset correction, P[int] Sensor Pin
+*   Set DHT sensor parameter: D0 P[int] Sensor Pin, S[int] Sensor Type (11, 21, 22).
+* M306 - Set Heaters parameters.
+*   H[heaters] 0-5 Hotend, -1 BED, -2 CHAMBER, -3 COOLER
+*   T[int] 0-3 For Select Beds or Chambers (default 0)
+*   A[int] Power Drive Min, B[int] Power Drive Max, C[int] Power Max,
+*   L[int] Min temperature, O[int] Max temperature, U[bool] Use Pid/bang bang,
+*   I[bool] Hardware Inverted, T[bool] Thermal Protection, P[int] Pin
+* M352 - Set Driver pins and logic
+*    X    E[Enable pin] D[Dir pin] S[Step pin] L[enable logic] M[step logic]
+*   X2    E[Enable pin] D[Dir pin] S[Step pin] L[enable logic] M[step logic]
+*    Y    E[Enable pin] D[Dir pin] S[Step pin] L[enable logic] M[step logic]
+*   Y2    E[Enable pin] D[Dir pin] S[Step pin] L[enable logic] M[step logic]
+*    Z    E[Enable pin] D[Dir pin] S[Step pin] L[enable logic] M[step logic]
+*   Z2    E[Enable pin] D[Dir pin] S[Step pin] L[enable logic] M[step logic]
+*   Z3    E[Enable pin] D[Dir pin] S[Step pin] L[enable logic] M[step logic]
+*   T0-5  E[Enable pin] D[Dir pin] S[Step pin] L[enable logic] M[step logic]
+* Fix MBL
+* Rewrite filament runout
+* Rewrite Restart reduce size memory cost
+* Rewrite all driver, now are object
+* Driver pins now save in eeprom
+* Fix and clear code
+
+### Version 4.3.8
+* Add TMC settings to menu LCD
+* Add Adaptive Fan speed
+* Add Request pause to Host
+* Rewrite TMC files
+* Add M92 Subcommand H[microstep] L[Layer wanted]
+* Add to all nextion scroll message By MrGoblin
+* Fix Mixer color routine
+* Add M166 Set the Gradient Mix for the mixing extruder. (Requires COLOR_MIXING_EXTRUDER)
+* Fix Scara
+* Add Service Timer
+* Fix timer stepper with TMC2130 bug
+* Clear code
+
+### Version 4.3.7
+* Add Command:
+* G34: Set Delta Height calculated from toolhead position (only DELTA)
+* M930: TMC set blank_time.
+* M931: TMC set off_time.
+* M932: TMC set hysteresis_start.
+* M933: TMC set hysteresis_end.
+* M934: TMC set fast_decay_time.
+* M935: TMC set disable_I_comparator.
+* M936: TMC set stealth_gradient.
+* M937: TMC set stealth_amplitude.
+* M938: TMC set stealth_freq.
+* M939: TMC switch stealth_autoscale.
+* M940: TMC switch StealthChop.
+* M941: TMC switch ChopperMode.
+* M942: TMC switch interpolation.
+* M524: Abort the current SD print job (started with M24). (Requires SDSUPPORT)
+* M223: T[extruder] S[bool] set Filrunout Logic.
+* M224: T[extruder] S[bool] set Filrunout Pullup.
+* M666: L delta segment per line.
+* M851: Set X Y Z Probe Offset in current units, set speed [F]ast and [S]low, [R]epetititons. (Requires Probe)
+* M413: S[bool] Enable / Disable Restart Job. (Requires SD_RESTART_FILE)
+* M800: S goto to lcd menu. With no parameters run restart commands. (Requires SD_RESTART_FILE)
+* M73: P[percent] Set percentage complete (compatibility with Marlin)
+* M116: Wait for all heaters to reach target temperature
+* Add Text Menu to Nextion Display
+* Add sound function
+* Add LCD menu for switch Sound [on - silent - off]
+* Add pause before deploy/stow for user confirmation
+* Add second serial for arduino due
+* Add PCF8574 Expansion IO for pin 120 - 121 - 122 - 123 - 124 - 125 - 126 - 127
+* Fix M800 for restart job
+* Fix error with lcd 44780 with progress bar active
+* Fix M205 with Delta and Junction active
+* Fix Dogm LCD
+* Add Status menu anim option for graphic display
+* Add progress bar to heater when heating
+* Add Text Menu SD to Nextion
+* Add Support USB FLASH DRIVE such as SD
+* Add Thermal protection to command M306 and saved it in EEPROM
+* Fixed GFX overlay with Nextion when printing from USB
+* Add Statistic in EEPROM and not in SD
+* Fixed change filament menu with Nextion LCD
+* Fixed send ok in some situations
+* Fixed TMC Debug e test connection
+* The BABYSTEPPING menu if enabled DOUBLECLICK_FOR_Z_BABYSTEPPING is always working even when it is not in print
+* Reduce PROGMEM for print settings
+* Add Soft PWM to SAM processor and Kickstart for FAN
+* Fix Laser M3 M4 command
+* Fix and clear code
+
+### Version 4.3.6
+* Make class Mechanics to static
+* Add Junction Deviation instead of traditional Jerk limiting
+* Add Adaptive multiaxis step smoothing
+* Add M205 J - Set Junction Deviation mm
+* Add Bézier Jerk Control
+* Add Safety Timer, after 30 minutes if not printing (SD or M530 S1) the heaters switch off.
+* Rewrite SD Restart for auto restart when power loss and return.
+* Add command gcode M569 for Stepper driver control: Dir, direction delay, minimum pulse and maximum rate.
+* Add Hysteresis in EEPROM
+* Fix and clear code
+
+### Version 4.3.5 Stable
+* Now if a heater does not have a sensor or fails, it will not be used, but it will not kill.
+* If the PID autotune is not done, the firmware will not switch the heater on until the autotune is performed. Only if have EEPROM.
+* Update Nextion Firmware 4.3" and 7"
+* Add firmware for 4.3 Enanched and 5" Enanched
+* Add X2 and Y2 endstop if enabled X2 two stepper drivers or Y2 two stepper drivers
+* Add M666 Set Two Endstops offsets for X, Y, and/or Z
+* Delete Z3 and Z4 stepper driver
+* Fix and clear code
+
+### Version 4.3.4 Stable
+* CaseLight use Neopixel by Original Marlin
+* Add command M123 - Set Logic Endstop
+* Add command M124 - Set Pullup Endstop
+* Add command M603 - Set filament change
+* Add command M701 - Load Filament
+* Add command M702 - Unload Filament
+* Replaced easy bowden with filament change load & unload
+* Save Logic and Pullup Endstop to EEPROM
+* Fix and clear code
+
+### Version 4.3.3 Stable
+* Add command M306 - Set Heaters parameters.
+* Add G26 Mesh validation.
+* Update Nextion Firmware with new graphics by Mr Goblin.
+* Add support for TMC2208
+* Minor Fix.
+
+### Version 4.3.29 dev
+* New calculation system for thermistors
+* Add command M305 - Set thermistor and ADC parameters and DHT sensor parameters
+* Add M303 R<Method> 0 = Classic Pid, 1 = Some overshoot, 2 = No Overshoot, 3 = Pessen Pid
+* Unified commands M320 and M420 in M420 for all Bed Level
+* Add subcode to M106 - P<fan> S<speed> F<frequency> U<pin> L<min speed> I<inverted logic>
+* Add option for SD card SDCARD_SORT_ALPHA (By Marlin)
+* Add M36 - Set SD Card Sorting Options
+* Fix and clear code
+
+### Version 4.3.28 dev
+* Add Unified Bed Level (UBL) for Cartesian, Core and Delta
+* Add support for DHT11, DHT21 and DHT22 Temperature/Humidity sensors (Only for test)
+* Fix and clear code
+
+### Version 4.3.27.2 dev
+* Add subcommand S to M600 for change temperature
+* Fix and clear code
+
 ### Version 4.3.27 dev
 * New Class Heater for 4 Hotend 1 Bed 1 Chamber 1 Cooler
 * Rewrite Temperature code
@@ -136,8 +416,8 @@
 * Add option for name firmware file Nextion
 
 ### Version 4.3.06_dev
-* Add Auto report temp width M155
-* Add new capabilities string width M115
+* Add Auto report temp with M155
+* Add new capabilities string with M115
 * Add M155 Set temperature auto-report interval
 * Add M320 Activate autolevel
 * Add M321 Deactivate autoleveling
@@ -150,8 +430,8 @@
 ### Version 4.3.05_dev
 * Add register in EEPROM Bilinear Bed Level
 * Add M355 Turn case lights on/off
-* Fix Error width 8bit and 2 or more Hotends
-* Upgrade Nextion width Filament Change
+* Fix Error with 8bit and 2 or more Hotends
+* Upgrade Nextion with Filament Change
 * New Fix
 
 ### Version 4.3.04_dev
@@ -208,7 +488,7 @@
 
 ### Version 4.2.82
 * Add DONDOLO_DUAL_MOTOR for DONDOLO bowden and dual extruder
-* Add reader TAG width MFRC522
+* Add reader TAG with MFRC522
 
 ### Version 4.2.81
 * Fix serial protocol for Repetier Host
@@ -288,7 +568,7 @@
 * Add support for Piggy Alligator board
 * Add Debug_info. Repetier button info for enabled or disabled, or M111 S2 for enabled and M111 S0 for disabled.
 * Improved Topography Auto Bed Level.
-* Add Dryrun ABL and verbose width command G29 D or G29 V(0-4).
+* Add Dryrun ABL and verbose with command G29 D or G29 V(0-4).
 * Improve Autoconfiguration for Delta printer.
 * Add support (test only) for NEXTION HMI LCD.
 * Improved firmare test dialog.
@@ -302,11 +582,11 @@
 ### Version 4.1.3
 * Improved support for Delta, SCARA, COREXY & COREXZ kinematics.
 * Improved stepper timer for high velocity driver and not.
-* Add calibrate surface width DELTA.
-* Improved serial comunication width most popular Host.
+* Add calibrate surface with DELTA.
+* Improved serial comunication with most popular Host.
 * Add Acceleration retraction for extruder.
 * Add EJerk for extruder.
-* Remove limit for virtual extruder to 4. Now width MKR4 or NPr2 is possible have infinite extruder...
+* Remove limit of maximum 4 virtual extruders. Now with MKR4 or NPr2 is possible to have infinite extruders...
 * Add M92 T* E (Set step per unit for any extruder).
 * Add M203 T* E (Set max feedrate for any extruder).
 * Add M204 T* R (Set acc retraction for any extruder).

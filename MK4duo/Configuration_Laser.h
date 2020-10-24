@@ -2,8 +2,8 @@
  * MK4duo Firmware for 3D Printer, Laser and CNC
  *
  * Based on Marlin, Sprinter and grbl
- * Copyright (C) 2011 Camiel Gubbels / Erik van der Zalm
- * Copyright (C) 2013 Alberto Cotronei @MagoKimbra
+ * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
+ * Copyright (c) 2020 Alberto Cotronei @MagoKimbra
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#pragma once
 
 /**
  * Configuration_Laser.h
@@ -26,9 +27,6 @@
  * This configuration file contains all laser functions.
  *
  */
-
-#ifndef _CONFIGURATION_LASER_H_
-#define _CONFIGURATION_LASER_H_
 
 //===========================================================================
 //============================= Laser Settings ==============================
@@ -62,7 +60,7 @@
 //#define LASER_FIRE_E        // fire the laser when the E axis moves
 
 // Raster mode enables the laser to etch bitmap data at high speeds. Increases command buffer size substantially.
-#define LASER_RASTER
+//#define LASER_RASTER
 #define LASER_MAX_RASTER_LINE 68      // Maximum number of base64 encoded pixels per raster gcode command
 #define LASER_RASTER_ASPECT_RATIO 1   // pixels aren't square on most displays, 1.33 == 4:3 aspect ratio. 
 #define LASER_RASTER_MM_PER_PULSE 0.2 // Can be overridden by providing an R value in M649 command : M649 S17 B2 D0 R0.1 F4000
@@ -77,9 +75,4 @@
 // Uncomment the following line to enable cubic bezier curve movement with the G5 code
 // #define G5_BEZIER
 
-#define LASER_WATTS 40.0
-#define LASER_DIAMETER 0.1        // milimeters
-#define LASER_PWM 25000           // hertz
-#define LASER_FOCAL_HEIGHT 74.50  // z axis position at which the laser is focused
-
-#endif /* _CONFIGURATION_LASER_H_ */
+#define LASER_FOCAL_HEIGHT 10.00  // z axis position at which the laser is focused

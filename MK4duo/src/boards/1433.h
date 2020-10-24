@@ -1,12 +1,12 @@
 /****************************************************************************************
 * 1433
-* Arduino Due pin assignment
-* for RAMPS4DUE (http://forums.reprap.org/read.php?219,479626,page=1)
+*
+* RAMPS 1.7 (Power outputs: Hotend, Fan, Bed)
 ****************************************************************************************/
 
 //###CHIP
 #if DISABLED(ARDUINO_ARCH_SAM)
-  #error Oops!  Make sure you have 'Arduino Due' selected from the 'Tools -> Boards' menu.
+  #error "Oops! Select 'Arduino Due' in 'Tools > Board.'"
 #endif
 //@@@
 
@@ -14,175 +14,196 @@
 
 //###BOARD_NAME
 #if DISABLED(BOARD_NAME)
-  #define BOARD_NAME "RAMPS4DUE"
+  #define BOARD_NAME "Ramps 1.7 HFB"
 #endif
 //@@@
 
 
 //###X_AXIS
-#define ORIG_X_STEP_PIN 54
-#define ORIG_X_DIR_PIN 55
-#define ORIG_X_ENABLE_PIN 38
-#define ORIG_X_CS_PIN -1
+#define ORIG_X_STEP_PIN            56
+#define ORIG_X_DIR_PIN             57
+#define ORIG_X_ENABLE_PIN          55
+#define ORIG_X_CS_PIN              46
 
 //###Y_AXIS
-#define ORIG_Y_STEP_PIN 60
-#define ORIG_Y_DIR_PIN 61
-#define ORIG_Y_ENABLE_PIN 56
-#define ORIG_Y_CS_PIN -1
+#define ORIG_Y_STEP_PIN            62
+#define ORIG_Y_DIR_PIN             63
+#define ORIG_Y_ENABLE_PIN          58
+#define ORIG_Y_CS_PIN              42
 
 //###Z_AXIS
-#define ORIG_Z_STEP_PIN 46
-#define ORIG_Z_DIR_PIN 48
-#define ORIG_Z_ENABLE_PIN 62
-#define ORIG_Z_CS_PIN -1
+#define ORIG_Z_STEP_PIN            68
+#define ORIG_Z_DIR_PIN             69
+#define ORIG_Z_ENABLE_PIN          67
+#define ORIG_Z_CS_PIN              48
 
 //###EXTRUDER_0
-#define ORIG_E0_STEP_PIN 26
-#define ORIG_E0_DIR_PIN 28
-#define ORIG_E0_ENABLE_PIN 24
-#define ORIG_E0_CS_PIN -1
-#define ORIG_SOL0_PIN -1
+#define ORIG_E0_STEP_PIN           34
+#define ORIG_E0_DIR_PIN            36
+#define ORIG_E0_ENABLE_PIN         30
+#define ORIG_E0_CS_PIN             38
+#define ORIG_SOL0_PIN              NoPin
 
 //###EXTRUDER_1
-#define ORIG_E1_STEP_PIN 36
-#define ORIG_E1_DIR_PIN 34
-#define ORIG_E1_ENABLE_PIN 30
-#define ORIG_E1_CS_PIN -1
-#define ORIG_SOL1_PIN -1
+#define ORIG_E1_STEP_PIN           24
+#define ORIG_E1_DIR_PIN            26
+#define ORIG_E1_ENABLE_PIN         22
+#define ORIG_E1_CS_PIN              6
+#define ORIG_SOL1_PIN              NoPin
 
 //###EXTRUDER_2
-#define ORIG_E2_STEP_PIN -1
-#define ORIG_E2_DIR_PIN -1
-#define ORIG_E2_ENABLE_PIN -1
-#define ORIG_E2_CS_PIN -1
-#define ORIG_SOL2_PIN -1
+#define ORIG_E2_STEP_PIN           NoPin
+#define ORIG_E2_DIR_PIN            NoPin
+#define ORIG_E2_ENABLE_PIN         NoPin
+#define ORIG_E2_CS_PIN             NoPin
+#define ORIG_SOL2_PIN              NoPin
 
 //###EXTRUDER_3
-#define ORIG_E3_STEP_PIN -1
-#define ORIG_E3_DIR_PIN -1
-#define ORIG_E3_ENABLE_PIN -1
-#define ORIG_E3_CS_PIN -1
-#define ORIG_SOL3_PIN -1
+#define ORIG_E3_STEP_PIN           NoPin
+#define ORIG_E3_DIR_PIN            NoPin
+#define ORIG_E3_ENABLE_PIN         NoPin
+#define ORIG_E3_CS_PIN             NoPin
+#define ORIG_SOL3_PIN              NoPin
 
 //###EXTRUDER_4
-#define ORIG_E4_STEP_PIN -1
-#define ORIG_E4_DIR_PIN -1
-#define ORIG_E4_ENABLE_PIN -1
-#define ORIG_E4_CS_PIN -1
-#define ORIG_SOL4_PIN -1
+#define ORIG_E4_STEP_PIN           NoPin
+#define ORIG_E4_DIR_PIN            NoPin
+#define ORIG_E4_ENABLE_PIN         NoPin
+#define ORIG_E4_CS_PIN             NoPin
+#define ORIG_SOL4_PIN              NoPin
 
 //###EXTRUDER_5
-#define ORIG_E5_STEP_PIN -1
-#define ORIG_E5_DIR_PIN -1
-#define ORIG_E5_ENABLE_PIN -1
-#define ORIG_E5_CS_PIN -1
-#define ORIG_SOL5_PIN -1
+#define ORIG_E5_STEP_PIN           NoPin
+#define ORIG_E5_DIR_PIN            NoPin
+#define ORIG_E5_ENABLE_PIN         NoPin
+#define ORIG_E5_CS_PIN             NoPin
+#define ORIG_SOL5_PIN              NoPin
 
 //###EXTRUDER_6
-#define ORIG_E6_STEP_PIN -1
-#define ORIG_E6_DIR_PIN -1
-#define ORIG_E6_ENABLE_PIN -1
-#define ORIG_E6_CS_PIN -1
-#define ORIG_SOL6_PIN -1
+#define ORIG_E6_STEP_PIN           NoPin
+#define ORIG_E6_DIR_PIN            NoPin
+#define ORIG_E6_ENABLE_PIN         NoPin
+#define ORIG_E6_CS_PIN             NoPin
+#define ORIG_SOL6_PIN              NoPin
 
 //###EXTRUDER_7
-#define ORIG_E7_STEP_PIN -1
-#define ORIG_E7_DIR_PIN -1
-#define ORIG_E7_ENABLE_PIN -1
-#define ORIG_E7_CS_PIN -1
-#define ORIG_SOL7_PIN -1
+#define ORIG_E7_STEP_PIN           NoPin
+#define ORIG_E7_DIR_PIN            NoPin
+#define ORIG_E7_ENABLE_PIN         NoPin
+#define ORIG_E7_CS_PIN             NoPin
+#define ORIG_SOL7_PIN              NoPin
 
 //###ENDSTOP
-#define ORIG_X_MIN_PIN 3
-#define ORIG_X_MAX_PIN 2
-#define ORIG_Y_MIN_PIN 14
-#define ORIG_Y_MAX_PIN 15
-#define ORIG_Z_MIN_PIN 18
-#define ORIG_Z_MAX_PIN 19
-#define ORIG_Z2_MIN_PIN -1
-#define ORIG_Z2_MAX_PIN -1
-#define ORIG_Z3_MIN_PIN -1
-#define ORIG_Z3_MAX_PIN -1
-#define ORIG_Z4_MIN_PIN -1
-#define ORIG_Z4_MAX_PIN -1
-#define ORIG_E_MIN_PIN -1
-#define ORIG_Z_PROBE_PIN -1
+#define ORIG_X_MIN_PIN              3
+#define ORIG_X_MAX_PIN              2
+#define ORIG_Y_MIN_PIN             14
+#define ORIG_Y_MAX_PIN             15
+#define ORIG_Z_MIN_PIN             18
+#define ORIG_Z_MAX_PIN             19
+#define ORIG_Z2_MIN_PIN            NoPin
+#define ORIG_Z2_MAX_PIN            NoPin
+#define ORIG_Z3_MIN_PIN            NoPin
+#define ORIG_Z3_MAX_PIN            NoPin
+#define ORIG_Z4_MIN_PIN            NoPin
+#define ORIG_Z4_MAX_PIN            NoPin
+#define ORIG_Z_PROBE_PIN           64
 
 //###SINGLE_ENDSTOP
-#define X_STOP_PIN -1
-#define Y_STOP_PIN -1
-#define Z_STOP_PIN -1
+#define X_STOP_PIN                 NoPin
+#define Y_STOP_PIN                 NoPin
+#define Z_STOP_PIN                 NoPin
 
 //###HEATER
-#define ORIG_HEATER_0_PIN 10
-#define ORIG_HEATER_1_PIN -1
-#define ORIG_HEATER_2_PIN -1
-#define ORIG_HEATER_3_PIN -1
-#define ORIG_HEATER_BED_PIN 8
-#define ORIG_HEATER_CHAMBER_PIN -1
-#define ORIG_COOLER_PIN -1
+#define ORIG_HEATER_HE0_PIN        11
+#define ORIG_HEATER_HE1_PIN        NoPin
+#define ORIG_HEATER_HE2_PIN        NoPin
+#define ORIG_HEATER_HE3_PIN        NoPin
+#define ORIG_HEATER_HE4_PIN        NoPin
+#define ORIG_HEATER_HE5_PIN        NoPin
+#define ORIG_HEATER_BED0_PIN        9
+#define ORIG_HEATER_BED1_PIN       NoPin
+#define ORIG_HEATER_BED2_PIN       NoPin
+#define ORIG_HEATER_BED3_PIN       NoPin
+#define ORIG_HEATER_CHAMBER0_PIN   NoPin
+#define ORIG_HEATER_CHAMBER1_PIN   NoPin
+#define ORIG_HEATER_CHAMBER2_PIN   NoPin
+#define ORIG_HEATER_CHAMBER3_PIN   NoPin
+#define ORIG_HEATER_COOLER_PIN     NoPin
 
 //###TEMPERATURE
-#define ORIG_TEMP_0_PIN 9
-#define ORIG_TEMP_1_PIN -1
-#define ORIG_TEMP_2_PIN -1
-#define ORIG_TEMP_3_PIN -1
-#define ORIG_TEMP_BED_PIN 10
-#define ORIG_TEMP_CHAMBER_PIN -1
-#define ORIG_TEMP_COOLER_PIN -1
+#define ORIG_TEMP_HE0_PIN           6
+#define ORIG_TEMP_HE1_PIN           7
+#define ORIG_TEMP_HE2_PIN          NoPin
+#define ORIG_TEMP_HE3_PIN          NoPin
+#define ORIG_TEMP_HE4_PIN          NoPin
+#define ORIG_TEMP_HE5_PIN          NoPin
+#define ORIG_TEMP_BED0_PIN          5
+#define ORIG_TEMP_BED1_PIN         NoPin
+#define ORIG_TEMP_BED2_PIN         NoPin
+#define ORIG_TEMP_BED3_PIN         NoPin
+#define ORIG_TEMP_CHAMBER0_PIN     NoPin
+#define ORIG_TEMP_CHAMBER1_PIN     NoPin
+#define ORIG_TEMP_CHAMBER2_PIN     NoPin
+#define ORIG_TEMP_CHAMBER3_PIN     NoPin
+#define ORIG_TEMP_COOLER_PIN       NoPin
 
 //###FAN
-#define ORIG_FAN0_PIN 9
-#define ORIG_FAN1_PIN -1
-#define ORIG_FAN2_PIN -1
-#define ORIG_FAN3_PIN -1
+#define ORIG_FAN0_PIN              10
+#define ORIG_FAN1_PIN               8
+#define ORIG_FAN2_PIN              NoPin
+#define ORIG_FAN3_PIN              NoPin
+#define ORIG_FAN4_PIN              NoPin
+#define ORIG_FAN5_PIN              NoPin
 
-//###MISC
-#define ORIG_PS_ON_PIN 12
-#define ORIG_BEEPER_PIN -1
-#define LED_PIN 13
-#define SDPOWER -1
-#define SD_DETECT_PIN -1
-#define SDSS 53
-#define KILL_PIN -1
-#define DEBUG_PIN -1
-#define SUICIDE_PIN -1
+//###SERVO
+#define SERVO0_PIN                 NoPin
+#define SERVO1_PIN                 NoPin
+#define SERVO2_PIN                 NoPin
+#define SERVO3_PIN                 NoPin
+
+//###SAM_SDSS
+#define SDSS                       53
+
+//###MAX6675
+#define MAX6675_SS_PIN             NoPin
+
+//###MAX31855
+#define MAX31855_SS0_PIN           NoPin
+#define MAX31855_SS1_PIN           NoPin
+#define MAX31855_SS2_PIN           NoPin
+#define MAX31855_SS3_PIN           NoPin
 
 //###LASER
-#define ORIG_LASER_PWR_PIN -1
-#define ORIG_LASER_PWM_PIN -1
+#define ORIG_LASER_PWR_PIN         NoPin
+#define ORIG_LASER_PWM_PIN         NoPin
 
-//###SERVOS
-#if NUM_SERVOS > 0
-  #define SERVO0_PIN -1
-  #if NUM_SERVOS > 1
-    #define SERVO1_PIN -1
-    #if NUM_SERVOS > 2
-      #define SERVO2_PIN -1
-      #if NUM_SERVOS > 3
-        #define SERVO3_PIN -1
-      #endif
-    #endif
-  #endif
-#endif
+//###MISC
+#define ORIG_PS_ON_PIN             12
+#define ORIG_BEEPER_PIN            NoPin
+#define LED_PIN                    13
+
+
+//###UNKNOWN_PINS
+#define EEPROM_SD
+#define E2END 0x2000
 //@@@
 
-
 //###IF_BLOCKS
-#if ENABLED(ULTRA_LCD)
+#if HAS_SPI_LCD
+
+  #undef ORIG_BEEPER_PIN
 
   #if ENABLED(REPRAPWORLD_GRAPHICAL_LCD)
-    #define LCD_PINS_RS       49 //CS chip select /SS chip slave select
-    #define LCD_PINS_ENABLE   51 //SID (MOSI)
-    #define LCD_PINS_D4       52 //SCK (CLK) clock
+    #define LCD_PINS_RS       49
+    #define LCD_PINS_ENABLE   51
+    #define LCD_PINS_D4       52
   #elif ENABLED(NEWPANEL) && ENABLED(PANEL_ONE)
-    #define LCD_PINS_RS       40
-    #define LCD_PINS_ENABLE   42
-    #define LCD_PINS_D4       65
-    #define LCD_PINS_D5       66
-    #define LCD_PINS_D6       44
-    #define LCD_PINS_D7       64
+    #define LCD_PINS_RS       45
+    #define LCD_PINS_ENABLE   43
+    #define LCD_PINS_D4       37
+    #define LCD_PINS_D5       35
+    #define LCD_PINS_D6       39
+    #define LCD_PINS_D7       41
   #else
     #define LCD_PINS_RS       16
     #define LCD_PINS_ENABLE   17
@@ -223,16 +244,16 @@
       #define BTN_ENC           63
       #define SD_DETECT_PIN     42
     #elif ENABLED(LCD_I2C_PANELOLU2)
-      #define BTN_EN1           47  // reverse if the encoder turns the wrong way.
+      #define BTN_EN1           47
       #define BTN_EN2           43
       #define BTN_ENC           32
       #define LCD_SDSS          53
-      #define SD_DETECT_PIN     -1
+      #define SD_DETECT_PIN     NoPin
       #define KILL_PIN          41
     #elif ENABLED(LCD_I2C_VIKI)
-      #define BTN_EN1           22  // reverse if the encoder turns the wrong way.
+      #define BTN_EN1           22
       #define BTN_EN2            7
-      #define BTN_ENC           -1
+      #define BTN_ENC           NoPin
       #define LCD_SDSS          53
       #define SD_DETECT_PIN     49
     #elif ENABLED(VIKI2) || ENABLED(miniVIKI)
@@ -248,7 +269,7 @@
       #define BTN_ENC           39
 
       #define SDSS              53
-      #define SD_DETECT_PIN     -1  // Pin 49 for display sd interface, 72 for easy adapter board
+      #define SD_DETECT_PIN     NoPin
 
       #define KILL_PIN          31
 
@@ -257,7 +278,7 @@
         #define STAT_LED_BLUE_PIN 35
       #endif
     #elif ENABLED(ELB_FULL_GRAPHIC_CONTROLLER)
-      #define BTN_EN1           35  // reverse if the encoder turns the wrong way.
+      #define BTN_EN1           35
       #define BTN_EN2           37
       #define BTN_ENC           31
       #define SD_DETECT_PIN     49
@@ -272,7 +293,7 @@
       // Pins for DOGM SPI LCD Support
       #define DOGLCD_A0         44
       #define DOGLCD_CS         66
-      #define LCD_BACKLIGHT_PIN 65 // backlight LED on A11/D65
+      #define LCD_BACKLIGHT_PIN 65
       #define SDSS              53
 
       #define KILL_PIN          64
@@ -292,35 +313,36 @@
     #else
 
       // arduino pin which triggers an piezzo beeper
-      #define ORIG_BEEPER_PIN   33  // Beeper on AUX-4
+      #define ORIG_BEEPER_PIN   33
 
       // buttons are directly attached using AUX-2
       #if ENABLED(REPRAPWORLD_KEYPAD)
-        #define BTN_EN1         64  // encoder
-        #define BTN_EN2         59  // encoder
-        #define BTN_ENC         63  // enter button
-        #define SHIFT_OUT       40  // shift register
-        #define SHIFT_CLK       44  // shift register
-        #define SHIFT_LD        42  // shift register
+        #define BTN_EN1         64
+        #define BTN_EN2         59
+        #define BTN_ENC         63
+        #define SHIFT_OUT       40
+        #define SHIFT_CLK       44
+        #define SHIFT_LD        42
       #elif ENABLED(PANEL_ONE)
-        #define BTN_EN1         59  // AUX2 PIN 3
-        #define BTN_EN2         63  // AUX2 PIN 4
-        #define BTN_ENC         49  // AUX3 PIN 7
+        #define BTN_EN1         59
+        #define BTN_EN2         63
+        #define BTN_ENC         49
       #else
         #define BTN_EN1         37
         #define BTN_EN2         35
-        #define BTN_ENC         31  // the click
+        #define BTN_ENC         31
       #endif
 
       #if ENABLED(G3D_PANEL)
         #define SD_DETECT_PIN   49
         #define KILL_PIN        41
       #else
-        #define SD_DETECT_PIN   -1  // Ramps does not use this port
+        #define SD_DETECT_PIN   NoPin
       #endif
 
     #endif
   #endif // NEWPANEL
 
-#endif // ULTRA_LCD
+#endif // HAS_SPI_LCD
 //@@@
+

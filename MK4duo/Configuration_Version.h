@@ -2,8 +2,8 @@
  * MK4duo Firmware for 3D Printer, Laser and CNC
  *
  * Based on Marlin, Sprinter and grbl
- * Copyright (C) 2011 Camiel Gubbels / Erik van der Zalm
- * Copyright (C) 2013 Alberto Cotronei @MagoKimbra
+ * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
+ * Copyright (c) 2020 Alberto Cotronei @MagoKimbra
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,15 +19,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#pragma once
 
-#ifndef _CONFIGURATION_VERSION_H_
-#define _CONFIGURATION_VERSION_H_
-
-#define FIRMWARE_NAME "MK4duo"
-#define SHORT_BUILD_VERSION "4.3.27_dev"
-#define BUILD_VERSION FIRMWARE_NAME "_" SHORT_BUILD_VERSION
-#define STRING_DISTRIBUTION_DATE __DATE__ " " __TIME__    // build date and time
-// It might also be appropriate to define a location where additional information can be found
-#define FIRMWARE_URL  "marlinkimbra.it"
-
-#endif /* _CONFIGURATION_VERSION_H_ */
+#define FIRMWARE_NAME           "MK4duo"
+#define SHORT_BUILD_VERSION     "4.4.0"
+#define BUILD_VERSION           FIRMWARE_NAME "_" SHORT_BUILD_VERSION
+#define STRING_REVISION_DATE    "24-05-2020"
+#define MK4DUO_FIRMWARE_URL     "marlinkimbra.it"

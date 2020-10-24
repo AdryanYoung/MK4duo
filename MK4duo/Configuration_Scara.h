@@ -2,8 +2,8 @@
  * MK4duo Firmware for 3D Printer, Laser and CNC
  *
  * Based on Marlin, Sprinter and grbl
- * Copyright (C) 2011 Camiel Gubbels / Erik van der Zalm
- * Copyright (C) 2013 Alberto Cotronei @MagoKimbra
+ * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
+ * Copyright (c) 2020 Alberto Cotronei @MagoKimbra
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#pragma once
 
 /**
  * Configuration_Scara.h
@@ -45,7 +46,9 @@
  * - Manual home positions
  * - Axis steps per unit
  * - Axis feedrate
- * - Axis accelleration
+ * - Axis acceleration
+ * - XY Frequency limit
+ * - Axis jerk
  * - Homing feedrate
  * - Hotend offset
  *
@@ -54,9 +57,6 @@
  * Feature-settings can be found in Configuration_Feature.h
  * Pins-settings can be found in "Configuration_Pins.h"
  */
-
-#ifndef _CONFIGURATION_SCARA_H_
-#define _CONFIGURATION_SCARA_H_
 
 #define KNOWN_MECH
 
@@ -73,11 +73,11 @@
 
 
 /*****************************************************************************************
- ************************************* Scara settings *************************************
-/****************************************************************************************/
-// MORGAN_SCARA for Marlin was developed by QHARLEY in ZA in 2012/2013. Implemented
+ ************************************* Scara settings ************************************
+ ****************************************************************************************/
+// MORGAN_SCARA for MK4duo was developed by QHARLEY in ZA in 2012/2013. Implemented
 // and slightly reworked by JCERNY in 06/2014 with the goal to bring it into Master-Branch
-// QHARLEYS Autobedlevelling has not been ported, because Marlin has now Bed-levelling
+// QHARLEYS Autobedlevelling has not been ported, because MK4duo has now Bed-levelling
 // You might need Z-Min endstop on SCARA-Printer to use this feature. Actually untested!
 
 //#define DEBUG_SCARA_KINEMATICS
@@ -112,25 +112,16 @@
  ************************* Endstop pullup resistors **************************************
  *****************************************************************************************
  *                                                                                       *
- * Comment this out (using // at the start of the line) to                               *
- * disable the endstop pullup resistors                                                  *
+ * Put true for enable or put false for disable the endstop pullup resistors             *
  *                                                                                       *
  *****************************************************************************************/
-#define ENDSTOPPULLUPS
-
-#if DISABLED(ENDSTOPPULLUPS)
-// fine endstop settings: Individual pullups. will be ignored if ENDSTOPPULLUPS is defined
-//#define ENDSTOPPULLUP_XMIN
-//#define ENDSTOPPULLUP_YMIN
-//#define ENDSTOPPULLUP_ZMIN
-//#define ENDSTOPPULLUP_Z2MIN
-//#define ENDSTOPPULLUP_XMAX
-//#define ENDSTOPPULLUP_YMAX
-//#define ENDSTOPPULLUP_ZMAX
-//#define ENDSTOPPULLUP_Z2MAX
-//#define ENDSTOPPULLUP_ZPROBE
-//#define ENDSTOPPULLUP_EMIN
-#endif
+#define ENDSTOPPULLUP_XMIN    false
+#define ENDSTOPPULLUP_YMIN    false
+#define ENDSTOPPULLUP_ZMIN    false
+#define ENDSTOPPULLUP_XMAX    false
+#define ENDSTOPPULLUP_YMAX    false
+#define ENDSTOPPULLUP_ZMAX    false
+#define ENDSTOPPULLUP_ZPROBE  false
 /*****************************************************************************************/
 
 
@@ -145,13 +136,22 @@
 #define X_MIN_ENDSTOP_LOGIC   false   // set to true to invert the logic of the endstop.
 #define Y_MIN_ENDSTOP_LOGIC   false   // set to true to invert the logic of the endstop.
 #define Z_MIN_ENDSTOP_LOGIC   false   // set to true to invert the logic of the endstop.
-#define Z2_MIN_ENDSTOP_LOGIC  false   // set to true to invert the logic of the endstop.
 #define X_MAX_ENDSTOP_LOGIC   false   // set to true to invert the logic of the endstop.
 #define Y_MAX_ENDSTOP_LOGIC   false   // set to true to invert the logic of the endstop.
 #define Z_MAX_ENDSTOP_LOGIC   false   // set to true to invert the logic of the endstop.
-#define Z2_MAX_ENDSTOP_LOGIC  false   // set to true to invert the logic of the endstop.
 #define Z_PROBE_ENDSTOP_LOGIC false   // set to true to invert the logic of the probe.
-#define E_MIN_ENDSTOP_LOGIC   false   // set to true to invert the logic of the endstop.
+/*****************************************************************************************/
+
+
+/*****************************************************************************************
+ ***************************** Endstop Interrupts Feature ********************************
+ *****************************************************************************************
+ *                                                                                       *
+ * Enable this feature if all enabled endstop pins are interrupt-capable.                *
+ * This will remove the need to poll the interrupt pins, saving many CPU cycles.         *
+ *                                                                                       *
+ *****************************************************************************************/
+//#define ENDSTOP_INTERRUPTS_FEATURE
 /*****************************************************************************************/
 
 
@@ -161,7 +161,7 @@
  *                                                                                       *
  * Probes are sensors/switches that need to be activated before they can be used         *
  * and deactivated after their use.                                                      *
- * Servo Probes, Z Sled Probe, Fix mounted Probe, etc.                                   *
+ * Servo Probes, Z Allen Key, Fix mounted Probe, etc.                                    *
  * You must activate one of these to use AUTO BED LEVELING FEATURE below.                *
  *                                                                                       *
  * If you want to still use the Z min endstop for homing,                                *
@@ -182,20 +182,26 @@
 // Z Servo Endstop
 // Remember active servos in Configuration_Feature.h
 // Define nr servo for endstop -1 not define. Servo index start 0
-#define Z_ENDSTOP_SERVO_NR -1
-#define Z_ENDSTOP_SERVO_ANGLES {90,0} // Z Servo Deploy and Stow angles
+#define PROBE_SERVO_NR -1
+#define PROBE_SERVO_ANGLES {90,0} // Z Servo Deploy and Stow angles
+
+// The "Manual Probe" provides a means to do "Auto" Bed Leveling and calibration without a probe.
+// Use G29 or G30 A repeatedly, adjusting the Z height at each point with movement commands
+// or (with LCD BED LEVELING) the LCD controller.
+//#define PROBE_MANUALLY
 
 // A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
 // For example an inductive probe, or a setup that uses the nozzle to probe.
 // An inductive probe must be deactivated to go below
 // its trigger-point if hardware endstops are active.
-//#define Z_PROBE_FIX_MOUNTED
+//#define PROBE_FIX_MOUNTED
 
-// The BLTouch probe emulates a servo probe.
+// The BLTouch probe uses a Hall effect sensor and emulates a servo.
+// The default connector is SERVO 0.
 //#define BLTOUCH
 
 // Enable if you have a Z probe mounted on a sled like those designed by Charles Bell.
-//#define Z_PROBE_SLED
+//#define PROBE_SLED
 // The extra distance the X axis must travel to pick up the sled.
 // 0 should be fine but you can push it further if you'd like.
 #define SLED_DOCKING_OFFSET 5
@@ -219,23 +225,44 @@
 
 // X and Y axis travel speed between probes, in mm/min
 #define XY_PROBE_SPEED 10000
-// Speed for the first approach when double-probing (with PROBE_DOUBLE_TOUCH)
-#define Z_PROBE_SPEED_FAST 120
-// Speed for the "accurate" probe of each point
-#define Z_PROBE_SPEED_SLOW 60
-// Use double touch for probing
-//#define PROBE_DOUBLE_TOUCH
+// Speed for the first approach, in mm/min
+#define Z_PROBE_SPEED_FAST 3000
+// Speed for the "accurate" probe of each point, in mm/min
+#define Z_PROBE_SPEED_SLOW 1000
+
+// Z Probe repetitions, median for best result
+#define Z_PROBE_REPETITIONS 1
 
 // Enable Z Probe Repeatability test to see how accurate your probe is
-//#define Z_MIN_PROBE_REPEATABILITY_TEST
+//#define PROBE_REPEATABILITY_TEST
+
+// Before deploy/stow pause for user confirmation
+//#define PAUSE_BEFORE_DEPLOY_STOW
 
 // Probe Raise options provide clearance for the probe to deploy, stow, and travel.
 #define Z_PROBE_DEPLOY_HEIGHT 15  // Z position for the probe to deploy/stow
 #define Z_PROBE_BETWEEN_HEIGHT 5  // Z position for travel between points
+#define Z_PROBE_AFTER_PROBING  0  // Z position after probing is done
+#define Z_PROBE_LOW_POINT     -2  // Farthest distance below the trigger-point to go before stopping
 
 // For M851 give a range for adjusting the Probe Z Offset
 #define Z_PROBE_OFFSET_RANGE_MIN -50
 #define Z_PROBE_OFFSET_RANGE_MAX  50
+
+// Enable if probing seems unreliable. Heaters and/or fans - consistent with the
+// options selected below - will be disabled during probing so as to minimize
+// potential EM interference by quieting/silencing the source of the 'noise' (the change
+// in current flowing through the wires).  This is likely most useful to users of the
+// BLTouch probe, but may also help those with inductive or other probe types.
+//#define PROBING_HEATERS_OFF       // Turn heaters off when probing
+//#define PROBING_FANS_OFF          // Turn fans off when probing
+
+// Add a bed leveling sub-menu for ABL or MBL.
+// Include a guided procedure if manual probing is enabled.
+//#define LCD_BED_LEVELING
+#define LCD_Z_STEP 0.025  // Step size while manually probing Z axis.
+#define LCD_PROBE_Z_RANGE 4     // Z Range centered on Z MIN POS for LCD Z adjustment
+//#define MESH_EDIT_MENU        // Add a menu to edit mesh points
 /*****************************************************************************************/
 
 
@@ -249,7 +276,6 @@
 #define X_HOME_DIR -1
 #define Y_HOME_DIR -1
 #define Z_HOME_DIR -1
-#define E_HOME_DIR -1
 /*****************************************************************************************/
 
 
@@ -261,7 +287,7 @@
  * Be sure you have this distance over your Z MAX POS in case.                           *
  *                                                                                       *
  *****************************************************************************************/
-#define MIN_Z_HEIGHT_FOR_HOMING   0
+#define MIN_Z_HEIGHT_FOR_HOMING 0
 /*****************************************************************************************/
 
 
@@ -277,7 +303,7 @@
 #define X_ENABLE_ON 0
 #define Y_ENABLE_ON 0
 #define Z_ENABLE_ON 0
-#define E_ENABLE_ON 0
+#define E_ENABLE_ON 0      // For all extruder
 /*****************************************************************************************/
 
 
@@ -326,7 +352,7 @@
 #define DISABLE_X false
 #define DISABLE_Y false
 #define DISABLE_Z false
-#define DISABLE_E false
+#define DISABLE_E false      // For all extruder
 // Disable only inactive extruder and keep active extruder enabled
 //#define DISABLE_INACTIVE_EXTRUDER
 /*****************************************************************************************/
@@ -381,7 +407,7 @@
  *****************************************************************************************/
 //#define MESH_BED_LEVELING
 
-#define MESH_INSET         10   // Mesh inset margin on print area
+#define MIN_PROBE_EDGE     10   // Mesh inset margin on print area
 #define GRID_MAX_POINTS_X   3   // Don't use more than 7 points per axis, implementation limited.
 #define GRID_MAX_POINTS_Y   3
 #define MESH_HOME_SEARCH_Z  5   // Z after Home, bed somewhere below but above 0.0.
@@ -391,8 +417,6 @@
 
 // Add display menu option for bed leveling.
 //#define MANUAL_BED_LEVELING
-// Step size while manually probing Z axis.
-#define LCD_Z_STEP 0.025
 /*****************************************************************************************/
 
 
@@ -425,21 +449,10 @@
 //#define AUTO_BED_LEVELING_LINEAR
 //#define AUTO_BED_LEVELING_BILINEAR
 
-// Enable detailed logging of G28, G29, G30, M48, etc.
-// Turn on with the command 'M111 S32'.
-// NOTE: Requires a lot of PROGMEM!
-//#define DEBUG_LEVELING_FEATURE
-
 /** START AUTO_BED_LEVELING_LINEAR or AUTO_BED_LEVELING_BILINEAR **/
 // Set the number of grid points per dimension
 #define GRID_MAX_POINTS_X 7
 #define GRID_MAX_POINTS_Y 7
-
-// Set the boundaries for probing (where the probe can reach).
-#define LEFT_PROBE_BED_POSITION   X_MIN_POS + 200
-#define RIGHT_PROBE_BED_POSITION  X_MAX_POS - 200
-#define FRONT_PROBE_BED_POSITION  Y_MIN_POS + 140
-#define BACK_PROBE_BED_POSITION   Y_MAX_POS
 
 // The Z probe minimum outer margin (to validate G29 parameters).
 #define MIN_PROBE_EDGE 10
@@ -454,17 +467,6 @@
 #define BILINEAR_SUBDIVISIONS 3
 /** END AUTO_BED_LEVELING_LINEAR or AUTO_BED_LEVELING_BILINEAR **/
 
-/** START AUTO_BED_LEVELING_3POINT **/
-// 3 arbitrary points to probe.
-// A simple cross-product is used to estimate the plane of the bed.
-#define ABL_PROBE_PT_1_X 15
-#define ABL_PROBE_PT_1_Y 180
-#define ABL_PROBE_PT_2_X 15
-#define ABL_PROBE_PT_2_Y 15
-#define ABL_PROBE_PT_3_X 180
-#define ABL_PROBE_PT_3_Y 15
-/** END AUTO_BED_LEVELING_3POINT **/
-
 // Commands to execute at the end of G29 probing.
 // Useful to retract or move the Z probe out of the way.
 //#define Z_PROBE_END_SCRIPT "G1 Z10 F8000\nG1 X10 Y10\nG1 Z0.5"
@@ -477,7 +479,7 @@
  *                                                                                       *
  * Gradually reduce leveling correction until a set height is reached,                   *
  * at which point movement will be level to the machine's XY plane.                      *
- * The height can be set with M420 Z<height> for MBL or M320 Z<height> for ABL           *
+ * The height can be set with M420 Z<height>                                             *
  * ONLY FOR LEVELING BILINEAR OR MESH BED LEVELING                                       *
  *                                                                                       *
  *****************************************************************************************/
@@ -556,11 +558,15 @@
 /*****************************************************************************************
  ********************************** Axis feedrate ****************************************
  *****************************************************************************************/
-//                                       X,   Y, Z, E0...(per extruder). (mm/sec)
-#define DEFAULT_MAX_FEEDRATE          {14.327, 28.653, 16, 25}
-#define MANUAL_FEEDRATE               {50*60, 50*60, 4*60, 60}  // Feedrates for manual moves along X, Y, Z, E from panel
-#define DEFAULT_MINIMUMFEEDRATE       0.0                       // minimum feedrate
-#define DEFAULT_MINTRAVELFEEDRATE     0.0
+//                                       X,   Y,   Z,  E0...(per extruder). (mm/sec)
+#define DEFAULT_MAX_FEEDRATE          {500, 500, 500, 100, 100, 100, 100}
+// Feedrates for manual moves along        X,     Y,     Z,  E from panel
+#define MANUAL_FEEDRATE               {50*60, 50*60, 50*60, 10*60}
+// (mm) Smallest manual Z move (< 0.1mm)
+#define SHORT_MANUAL_Z_MOVE           0.025
+// Minimum feedrate
+#define DEFAULT_MIN_FEEDRATE          0.0
+#define DEFAULT_MIN_TRAVEL_FEEDRATE   0.0
 // Minimum planner junction speed. Sets the default minimum speed the planner plans for at the end
 // of the buffer and all stops. This should not be much greater than zero and should only be changed
 // if unwanted behavior is observed on a user's machine when running at very slow speeds.
@@ -569,7 +575,7 @@
 
 
 /*****************************************************************************************
- ******************************** Axis accelleration *************************************
+ ******************************** Axis acceleration **************************************
  *****************************************************************************************/
 //  Maximum start speed for accelerated moves.    X,    Y,  Z,   E0...(per extruder)
 #define DEFAULT_MAX_ACCELERATION              {172, 344, 100, 10000}
@@ -579,6 +585,22 @@
 #define DEFAULT_ACCELERATION           20
 //  X, Y, Z acceleration in mm/s^2 for travel (non printing) moves
 #define DEFAULT_TRAVEL_ACCELERATION   150
+/*****************************************************************************************/
+
+
+/*****************************************************************************************
+ ******************************* XY Frequency limit **************************************
+ *****************************************************************************************
+ *                                                                                       *
+ * Reduce resonance by limiting the frequency of small zigzag infill moves.              *
+ * See http://hydraraptor.blogspot.com/2010/12/frequency-limit.html                      *
+ * Use M201 F<freq> G<min%> to change limits at runtime.                                 *
+ *                                                                                       *
+ *****************************************************************************************/
+// (Hz) Maximum frequency of small zigzag infill moves. Set with M201 F<hertz>.
+//#define XY_FREQUENCY_LIMIT       10
+// (percent) Minimum FR percentage to apply. Set with M201 G<min%>.
+#define XY_FREQUENCY_MIN_PERCENT  5
 /*****************************************************************************************/
 
 
@@ -632,5 +654,3 @@
 #define HOTEND_OFFSET_Y {0.0, 0.0, 0.0, 0.0} // (in mm) for each hotend, offset of the hotend on the Y axis
 #define HOTEND_OFFSET_Z {0.0, 0.0, 0.0, 0.0} // (in mm) for each hotend, offset of the hotend on the Z axis
 /*****************************************************************************************/
-
-#endif /* _CONFIGURATION_SCARA_H_ */
